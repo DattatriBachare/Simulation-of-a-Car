@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation of a Car</title>
+    <style>
+        body {
+            background-image: url('background.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: white;
+            text-align: center;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+        #MyImage {
+            position: absolute;
+            left: -90px;
+            transition: left 0.07s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Please use the navigation buttons to move the car</h1>
+    <div id="controls">
+        <button onclick="start()">Start</button>
+        <button onclick="stop()">Stop</button>
+        <button onclick="reverse()">Reverse</button>
+        <button onclick="init()">Restart</button>
+        <button onclick="accelerate()">Accelerate</button>
+        <button onclick="decelerate()">Decelerate</button>
+        <p>Speed: <span id="speedDisplay">10</span> px/s</p>
+    </div><br><br><br><b><br><br><br><br><br><br><br>
+    <img src="car.jpg" id="MyImage" height="200px" alt="Car Image"/>
+
+    <audio id="startSound" src="start.mp3"></audio>
+    <audio id="stopSound" src="stop.mp3"></audio>
+    <audio id="reverseSound" src="reverse.mp3"></audio>
+
+    <script>
+        var animation;
+        var speed = 10;
+        var direction = 1;
+        var img;
+
+        function init() {
+            img = document.getElementById("MyImage");
+            img.style.left = '-90px';
+            speed = 10;
+            direction = 1;
+            document.getElementById("speedDisplay").innerText = speed;
+        }
+
+        window.onload = init;
+
+        function moveCar() {
+            img.style.left = parseInt(img.style.left) + (speed * direction) + 'px';
+            animation = setTimeout(moveCar, 70);
+        }
+
+        function start() {
+            playSound('startSound');
+            direction = 1;
+            moveCar();
+        }
+
+        function stop() {
+            playSound('stopSound');
+            clearTimeout(animation);
+        }
+
+        function reverse() {
+            playSound('reverseSound');
+            direction = -1;
+            moveCar();
+        }
+
+        function accelerate() {
+            speed += 5;
+            document.getElementById("speedDisplay").innerText = speed;
+        }
+
+        function decelerate() {
+            if (speed > 5) {
+                speed -= 5;
+            }
+            document.getElementById("speedDisplay").innerText = speed;
+        }
+
+        function playSound(id) {
+            var sound = document.getElementById(id);
+            sound.play();
+        }
+    </script>
+</body>
+</html>
